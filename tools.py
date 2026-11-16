@@ -3,7 +3,7 @@ if os.name != 'nt':
     import readline
 
 from style import ANSI
-from commands import commands, history
+from commands import commands, history, aliases
 
 def format_prompt(user: str, device: str, pwd: str) -> str:
     return f'{ANSI.GREEN + ANSI.BOLD}{user}@{device}{ANSI.END}:{ANSI.BLUE + ANSI.BOLD}{pwd.replace(os.path.expanduser('~'), '~')}{ANSI.END}$ '
@@ -16,6 +16,8 @@ def process_command(user_input: str) -> str | None:
 
     if user_input[0] in commands:
         return commands[user_input[0]](user_input)
+    elif user_input[0] in aliases:
+        return commands[aliases[user_input[0]]](user_input)
     else:
         return f'{user_input[0]}: command not found'
 

@@ -3,11 +3,28 @@ import os, sys, platform
 from style import ANSI
 
 history = []
+aliases = {}
+
+
+def alias(user_input: list[str]) -> str:
+    last = ''
+    for i, value in enumerate(user_input[1:]):
+        if '=' == value:
+            aliases[last] = user_input[i+2].replace('"', '').replace('\'', '')
+        elif value.startswith('='):
+            aliases[last] = value[1:].replace('"', '').replace('\'', '')
+        elif value.endswith('='):
+            aliases[value[:-1]] = user_input[i+2].replace('"', '').replace('\'', '')
+        elif '=' in value:
+            value = value.split('=', 1)
+            aliases[value[0]] = value[1].replace('"', '').replace('\'', '')
+        last = value
 
 
 def cat(user_input: list[str]) -> str:
     options = {'-A': False, '-b': False, '-e': False, '-E': False, '-n': False, '-s': False, '-t': False, '-T': False, '-v': False, '-u': False}
 
+    i = 1
     for i, option in enumerate(user_input[1:]):
         if not option.startswith('-'):
             break
@@ -62,17 +79,22 @@ def cat(user_input: list[str]) -> str:
 
     output = ''
     errors = ''
-    if len(user_input[i+1:]) == 0:
+    i += 1
+    while i < len(user_input) and user_input[i].startswith('-') and user_input[i] != '-':
+        i += 1
+    if len(user_input[i:]) == 0:
         while True:
             try:
-                output += input() + '\n'
+                last = input()
+                print(last)
+                output += last + '\n'
             except EOFError:
                 break
-    for file in user_input[i+1:]:
+    for file in user_input[i:]:
         if file == '-':
             while True:
                 try:
-                    output += input() + '\n'
+                    print(input())
                 except EOFError:
                     break
         elif os.path.exists(file):
@@ -130,12 +152,25 @@ def pwd(_: str) -> str:
     return os.getcwd()
 
 
+def unalias(user_input: str) -> None:
+    global aliases
+
+    if '-a' in user_input:
+        aliases = []
+    else:
+        for value in user_input[1:]:
+            if value in aliases:
+                del aliases[value]
+
+
 commands = {
+    'alias': alias,
     'cat': cat,
     'cd': cd,
     'clear': clear,
     'history': history_,
     'pwd': pwd,
+    'unalias': unalias,
 }
 
 
