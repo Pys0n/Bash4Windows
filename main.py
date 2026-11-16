@@ -4,13 +4,13 @@ from tools import *
 
 
 def run() -> None:
-    pwd = os.getcwd()
+    cwd = os.getcwd()
     user = os.getlogin()
     device = platform.node()
 
     while True:
         try:
-            user_input = input(format_prompt(user, device, pwd)).strip()
+            user_input = input(format_prompt(user, device, cwd)).strip()
             if user_input == 'exit':
                 print('exit')
                 break
@@ -18,6 +18,8 @@ def run() -> None:
             output = process_command(user_input)
             if output != None:
                 print(output)
+            if user_input[:2] == 'cd':
+                cwd = os.getcwd()
         except KeyboardInterrupt:
             print()
         except EOFError:

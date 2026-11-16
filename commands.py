@@ -101,6 +101,14 @@ def cat(user_input: list[str]) -> str:
     return output + errors
 
 
+def cd(user_input: str) -> str | None:
+    path = user_input[-1]
+    if os.path.exists(path):
+        os.chdir(path)
+    else:
+        return f'cd: {path}: file or directory not found'
+
+
 def clear(_: str) -> None:
     if os.name != 'nt':
         os.system('clear')
@@ -108,7 +116,7 @@ def clear(_: str) -> None:
         os.system('cls')
 
 
-def history_(user_input: str) -> str:
+def history_(_: str) -> str:
     output = ''
     for i, command in enumerate(history[-1000:]):
         output += f' {str(max(len(history)-999, 1)+i).rjust(4)}  {command}\n'
@@ -118,6 +126,7 @@ def history_(user_input: str) -> str:
 
 commands = {
     'cat': cat,
+    'cd': cd,
     'clear': clear,
     'history': history_,
 }
