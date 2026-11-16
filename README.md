@@ -13,3 +13,4 @@ Execute `main.py` to start the terminal.
 - clear *(without options)*
 - exit
 - history *(without options)*
+- pwd *(only -L)*

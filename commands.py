@@ -126,11 +126,16 @@ def history_(_: str) -> str:
     return output.rstrip()
 
 
+def pwd(_: str) -> str:
+    return os.getcwd()
+
+
 commands = {
     'cat': cat,
     'cd': cd,
     'clear': clear,
     'history': history_,
+    'pwd': pwd,
 }
 
 
