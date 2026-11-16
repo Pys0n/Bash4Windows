@@ -55,8 +55,10 @@ def cat(user_input: list[str]) -> str:
                     ('-V, --version', 'Print version'),
                 ]
             )
+            return
         elif option in ('-V', '--version'):
-            pass
+            print('cat (uutils coreutils) 0.10.0')
+            return
 
     output = ''
     errors = ''
