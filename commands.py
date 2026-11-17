@@ -54,7 +54,7 @@ def cat(user_input: list[str]) -> str:
             options['-v'] = True
         elif option in ('-h', '--help'):
             print('Concatenate FILE(s), or standard input, to standard output\nWith no FILE, or when FILE is -, read standard input.\n')
-            print(f'{ANSI.BOLD + ANSI.UNDERLINE}Usage:{ANSI.END} cat [OPTION]... [FILE]...')
+            print(f'{ANSI.BOLD + ANSI.UNDERLINE}Usage:{ANSI.END} cat [OPTION]... [FILE]...\n')
 
             option_print(
                 [
@@ -163,6 +163,24 @@ def unalias(user_input: str) -> None:
                 del aliases[value]
 
 
+def whoami(user_input: str) -> str | None:
+    if '-h' in user_input or '--help' in user_input:
+        print('Print the current username.\n')
+        
+        print(f'{ANSI.BOLD + ANSI.UNDERLINE}Usage:{ANSI.END} cat [OPTION]... [FILE]...\n')
+
+        option_print(
+            (
+                ('-h, --help', 'Print help'),
+                ('-V, --version', 'Print version')
+            )
+        )
+    elif '-V' in user_input or '--version' in user_input:
+        print('whoami (uutils coreutils) 0.10.0')
+    else:
+        return os.getlogin()
+
+
 commands = {
     'alias': alias,
     'cat': cat,
@@ -171,14 +189,15 @@ commands = {
     'history': history_,
     'pwd': pwd,
     'unalias': unalias,
+    'whoami': whoami,
 }
 
 
 def option_print(options: tuple[tuple[str]]) -> None:
     max_length = max(len(option[0]) for option in options)
 
-    result = f'{ANSI.BOLD + ANSI.UNDERLINE}Options:{ANSI.END}'
+    result = f'{ANSI.BOLD + ANSI.UNDERLINE}Options:{ANSI.END}\n'
     for option in options:
-        result += f'  {ANSI.BOLD}{option[0].rjust(max_length)}{ANSI.END}  {option[1]}'
+        result += f'  {ANSI.BOLD}{option[0].ljust(max_length)}{ANSI.END}  {option[1]}\n'
     
-    print(result)
+    print(result.strip())

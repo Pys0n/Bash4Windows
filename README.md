@@ -14,3 +14,4 @@ Execute `main.py` to start the terminal.
 - exit
 - history *(without options)*
 - pwd *(only -L)*
+- whoami
