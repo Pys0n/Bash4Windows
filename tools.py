@@ -17,7 +17,7 @@ def process_command(user_input: str) -> str | None:
     if user_input[0] in commands:
         return commands[user_input[0]](user_input)
     elif user_input[0] in aliases:
-        return commands[aliases[user_input[0]]](user_input)
+        return process_command(' '.join(user_input).replace(user_input[0], aliases[user_input[0]]))
     else:
         return f'{user_input[0]}: command not found'
 
@@ -38,8 +38,8 @@ def split_command(user_input: str) -> list[str]:
         if not escaped and symbol in '"\'':
             if quote:
                 quote = False
-                parts.append(current)
-                current = ''
+            else:
+                quote = True
         if not quote and symbol == ' ':
             parts.append(current)
             current = ''    
