@@ -8,10 +8,12 @@ Execute `main.py` to start the terminal.
 
 ## List of implemented Commands
 
+- alias
 - cat
 - cd *(without options)*
 - clear *(without options)*
 - exit
 - history *(without options)*
 - pwd *(only -L)*
+- unalias
 - whoami
